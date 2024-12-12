@@ -1,12 +1,11 @@
 # Masync AI Content Generator
-MERN Project. Generates blog using Chatgpt. Uses Stripe Payment Integration. 
-
-Developed an AI SaaS application utilizing the MERN Stack, guided by ChatGPT. This comprehensive project includes features such as subscription-based access, secure user authentication, integrated payment systems, a free trial period, and much more.
+Masync AI Content Generator is an AI-powered content generation platform built using the MERN stack. The platform integrates OpenAI's ChatGPT API / Gemini Api Keys for content generation and Stripe for secure payment processing, offering a user-friendly interface for creating and managing blog posts.
 
 ## Technologies: 
 - MERN,
 - Open AI API(chatgpt API)// Gemini API key,
-- Stripe Payment Gateway Integration
+- Stripe Payment Gateway Integration,
+- AWS Lambda 
 
 ## Frontend .env
 ```
