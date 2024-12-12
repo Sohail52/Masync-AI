@@ -7,12 +7,12 @@ Masync AI Content Generator is an AI-powered content generation platform built u
 - Stripe Payment Gateway Integration,
 - AWS Lambda
 
-##Key Features:
--User Authentication: Secure user registration, login, and logout functionalities to ensure data privacy and security.
--Subscription Plans: Users can choose from different subscription plans (Free, Basic, Premium) with varying levels of access and API request limits.
--Payment Integration: Payments for subscription plans are securely handled using Stripe, enabling smooth transactions.
--Content Generation: Users can generate high-quality content using OpenAI's ChatGPT API / Gemini API Keys to assist with blog writing and other creative tasks.
--Content History: Users can view and manage their content generation history for easy access to past outputs.
+## Key Features:
+- User Authentication: Secure user registration, login, and logout functionalities to ensure data privacy and security.
+- Subscription Plans: Users can choose from different subscription plans (Free, Basic, Premium) with varying levels of access and API request limits.
+- Payment Integration: Payments for subscription plans are securely handled using Stripe, enabling smooth transactions.
+- Content Generation: Users can generate high-quality content using OpenAI's ChatGPT API / Gemini API Keys to assist with blog writing and other creative tasks.
+- Content History: Users can view and manage their content generation history for easy access to past outputs.
 
 ## Frontend .env
 ```
