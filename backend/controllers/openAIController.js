@@ -1,7 +1,21 @@
 const asyncHandler = require('express-async-handler');
-const axios = require('axios');
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const ContentHistory = require('../models/ContentHistory');
 const User = require('../models/User');
+
+// Access the API key from environment variable
+const API_KEY = process.env.GEMINI_API_KEY;
+
+if (!API_KEY) {
+ console.error("GEMINI_API_KEY is not set in your environment variables.");
+ process.exit(1); // Exit if the API key is missing
+}
+
+
+// Initialize the Gemini model
+const genAI = new GoogleGenerativeAI(API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
 
 // formatContent function to format the generated content-
 const formatContent = (content) => {
@@ -28,6 +42,7 @@ const formatContent = (content) => {
   return formattedContent;
 };
 
+
 const openAIController = asyncHandler(async (req, res) => {
   const { prompt } = req.body; // Retrieve prompt from request body
 
@@ -36,22 +51,14 @@ const openAIController = asyncHandler(async (req, res) => {
   }
 
   try {
-    // Make API call to AWS
-    const response = await axios.post(
-      'https://xj3bngqne0.execute-api.ap-south-1.amazonaws.com/default/helloBedrock',
-      { prompt }, // Send the prompt in the request body
-      {
-        headers: {
-          'Content-Type': 'application/json', // Make sure the correct content type is used
-        },
-      }
-    );
+    // Make API call to Gemini
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const content = response.text()
 
-    // Log the response from AWS API
-    console.log('AWS API Response:', response.data);
+    // Log the response from Gemini
+    console.log('Gemini API Response:', content);
 
-    // Extract generated content from the AWS API response
-    const content = response?.data?.generatedText || 'No content generated';
 
     // Format the content
     const formattedContent = formatContent(content);
@@ -70,14 +77,18 @@ const openAIController = asyncHandler(async (req, res) => {
     user.contentHistory.push(newContent._id); // Add the new content to the user's history
     await user.save();
 
+    // Increment and save the api request count
+    user.apiRequestCount += 1
+    await user.save()
+    console.log(`User ${user.username} has used ${user.apiRequestCount} credits`)
+
+
     // Send the generated content back to the frontend
     res.status(200).json({ success: true, content: formattedContent });
   } catch (error) {
-    console.error('Error generating content:', error.message);
-    res.status(500).json({ success: false, message: 'Failed to generate content' });
+    console.error('Error generating content:', error);
+    res.status(500).json({ success: false, message: 'Failed to generate content', error: error.message });
   }
 });
-
-
 
 module.exports = { openAIController };
